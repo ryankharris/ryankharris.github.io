@@ -1,0 +1,42 @@
+<p><a href="./index.html" title="Return to the index">Home</a></p>
+<h1><a id="user-content-fun-with-asyncawait" class="anchor" href="#fun-with-asyncawait" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewbox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Fun with async/await</h1>
+<h2><a id="user-content-summary" class="anchor" href="#summary" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewbox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Summary</h2>
+<p>I've been playing more with async/await recently as part of some job-hunting take-home exercises and today I incorporated some of what I've learned into <a href="https://github.com/ryankharris/grokblarg">grokblarg</a> to clean up some of the async code. Still learning how to make it pretty and where and when to blend promises in, but I created <a href="https://gist.github.com/ryankharris/bf5cd84d31f0ba547fb3e865058154ca">this gist</a> to display some of my personal example code.</p>
+<p>To run it locally, I added the following files into the folder it lives in:</p>
+<ul>
+<li>read.md with read/write permission</li>
+<li>writeWithPermission.md with read/write permission</li>
+<li>writeNoPermission.md with (chmod 444) read-only permission</li>
+</ul>
+<p>Here is the output I see in console when I <code>node ./index.js</code>:</p>
+<pre><code>------------------------------------------
+read: # Read.md
+Here is some content
+
+------------------------------------------
+readFile-error: Error: ENOENT: no such file or directory, open 'fake.md'
+------------------------------------------
+writeWithPermission: undefined
+------------------------------------------
+writeFile-error: Error: EACCES: permission denied, open 'writeNoPermission.md'
+------------------------------------------
+mkdir: undefined
+------------------------------------------
+mkdir-error: Error: EEXIST: file already exists, mkdir './testDir'
+------------------------------------------
+await asyncAccess returns undefined when permission checks successfully
+access: undefined
+------------------------------------------
+await asyncAccess returns error when a tested permission fails or file doesn't exist
+access-error: Error: ENOENT: no such file or directory, access './fake.md'
+------------------------------------------
+looks like it can be used within an if condition, but be clear on the expected result
+access succeeded in if condition
+------------------------------------------
+also possible in ternary operator
+access succeeded in ternary operator: true
+------------------------------------------
+careful not to mix 'async' with normal async-callback. your promise is resolved with undefined
+content: undefined
+</code></pre>
+<p>I haven't seriously explored using an <code>await</code> in any conditional and put those examples together quickly out of curiousity. I could easily have overlooked something so none of this is <strong>TRUTH</strong>, use at your own risk.</p>
